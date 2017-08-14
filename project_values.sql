@@ -43,27 +43,19 @@ DELETE FROM LEASEAGREEMENT WHERE RENTNO=32434;
 execute NewLease(32434,'Bob',7646452,6546322,'Larry','14-JAN-16','21-JUL-16',900.00,63.13);
 /*rent increase by 10% for same property*/
 
+
+/*Example Transactions*/
 /*1*/
 execute BranchProps(34232);
-/*2*/
-@ Transaction2.sql
 /*3*/
 execute OwnerProps('Frank',34232);
 execute OwnerProps('Frank',45321);
 /*4*/
 execute AvailProps('SF',3,200,700);
-/*5*/
-@ Transaction5.sql
-/*6*/
-/*Done*/
 /*7*/
 execute RenterLease('Bob');
-/*8*/
-@ Transaction8.sql
 /*9*/
 execute AverageRent('SF');
 execute AverageRent('SJ');
-/*10*/
-@ Transaction10.sql
 
 
