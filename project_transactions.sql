@@ -1,4 +1,4 @@
-/*1*/
+/*List of rental properties available for a specific branch(where the name of the branch is entered as input), along with the manager’s name*/
 CREATE OR REPLACE PROCEDURE BranchProps(BranchNum IN Employee.BranchNo%type)
 AS	
 	Manager VARCHAR(20);
@@ -23,10 +23,10 @@ END;
 /
 show errors;
 
-/*2*/
+/*List of supervisors and the properties (with addresses) they supervise*/
 SELECT SuperId,RentNo,Street||','||City||','||Zip Address FROM RentalProp;
 
-/*3*/
+/*List of rental properties by a specific owner(where the owner’s name is entered as input),listed in a GreenField branch(the branch name is input)*/
 CREATE OR REPLACE PROCEDURE OwnerProps(Owner IN PropOwner.Name%type,BranchNum IN Employee.BranchNo%type)
 AS	
 	CURSOR large_cur IS
@@ -47,7 +47,7 @@ END;
 /
 show errors;
 
-/*4*/
+/*List of properties available, where the properties should satisfy the criteria (city, no of rooms and/or range for rentgiven as input)*/
 CREATE OR REPLACE PROCEDURE AvailProps(Place IN RentalProp.City%type,RoomNum IN RentalProp.RoomNo%type,MinRent IN RentalProp.MonthlyRent%type, MaxRent IN RentalProp.MonthlyRent%type)
 AS	
 	CURSOR large_cur IS
@@ -68,12 +68,12 @@ END;
 /
 show errors;
 
-/*5*/
+/*Number of properties available for rent by branch*/
 SELECT BranchNo,COUNT(*) FROM EMPLOYEE NATURAL JOIN RENTALPROP
 WHERE EmpId=SuperId AND status='available'
 GROUP BY BranchNo;
 
-/*6*/
+/*Create  a  lease  agreement*/
 CREATE OR REPLACE PROCEDURE NewLease(RentNo IN LeaseAgreement.RentNo%type,Name IN LeaseAgreement.RentName%type,HomeP IN LeaseAgreement.HomePhone%type,WorkP IN LeaseAgreement.WorkPhone%type,ConName IN LeaseAgreement.ContactName%type,SDate IN LeaseAgreement.StartDate%type,EDate IN LeaseAgreement.EndDate%type,Deposit IN LeaseAgreement.DepAmount%type,Rent IN LeaseAgreement.RentAmount%type)
 AS
 BEGIN
@@ -82,7 +82,7 @@ END;
 /
 show errors;
 
-/*7*/
+/*Show a lease agreement for a renter (name is entered as input)*/
 CREATE OR REPLACE PROCEDURE RenterLease(Renter IN LeaseAgreement.RentName%type)
 AS
 	CURSOR large_cur IS
@@ -103,12 +103,12 @@ END;
 /
 show errors;
 
-/*8*/
+/*Show the renters who rented more than one rental property*/
 SELECT RentName,COUNT(*) FROM LEASEAGREEMENT
 GROUP BY RENTNAME,HOMEPHONE
 HAVING COUNT(*) > 1; 
 
-/*9*/
+/*Show  the  average  rent  for  properties  in a  town  (name  of  the  town  is  entered  as  input)*/
 CREATE OR REPLACE PROCEDURE AverageRent(Place IN RentalProp.City%type)
 AS
 	avgamount NUMBER(10,2); 
@@ -120,6 +120,6 @@ END;
 /
 show errors;
 
-/*10*/
+/*Show the names and addresses of properties whose leases will expire in next two months (from the current date)*/
 SELECT RentNo, Street||','||City||','||Zip Address FROM LEASEAGREEMENT NATURAL JOIN RENTALPROP
 WHERE EndDate-SYSDATE<=60 AND EndDate-SYSDATE>=1;
