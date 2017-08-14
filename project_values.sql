@@ -1,0 +1,69 @@
+/*Test Values*/
+INSERT INTO BRANCH VALUES(34232,7678934,'800 Main Street','SF',94116);
+INSERT INTO BRANCH VALUES(45321,7685734,'201 Post Street','SF',94116);
+INSERT INTO BRANCH VALUES(63452,7445734,'521 1st Street','SJ',95112);
+INSERT INTO EMPLOYEE VALUES(6577,34232,'Jerry',3874115,'31-JAN-10','Manager');
+INSERT INTO EMPLOYEE VALUES(6273,45321,'Dom',4349825,'31-MAR-10','Manager');
+INSERT INTO EMPLOYEE VALUES(5632,63452,'Sam',9845435,'01-FEB-10','Manager');
+INSERT INTO EMPLOYEE VALUES(6341,34232,'Bill',3842171,'03-APR-12','Manager');
+/*cannot have more than 1 manager per branch*/
+INSERT INTO EMPLOYEE VALUES(5342,34232,'Fred',4365435,'01-FEB-12','Supervisor');
+INSERT INTO EMPLOYEE VALUES(8422,34232,'Gary',7435435,'01-FEB-12','Staff');
+INSERT INTO EMPLOYEE VALUES(6322,34232,'Patrick',6255435,'01-FEB-12','Supervisor');
+INSERT INTO EMPLOYEE VALUES(4328,45321,'John',7845435,'01-FEB-12','Supervisor');
+INSERT INTO EMPLOYEE VALUES(6832,63452,'Red',3215435,'01-FEB-12','Supervisor');
+INSERT INTO EMPLOYEE VALUES(2539,34232,'Aaron',7535435,'01-FEB-12','Supervisor');
+INSERT INTO EMPLOYEE VALUES(3478,63452,'Bill',7535435,'01-FEB-12','Staff');
+INSERT INTO EMPLOYEE VALUES(8939,63452,'Phillip',7845349,'01-FEB-12','Supervisor');
+
+INSERT INTO PROPOWNER VALUES('ar323','Frank','342 Maple Street','SF',94116,3453426,0);
+INSERT INTO PROPOWNER VALUES('ab412','Oliver','952 10th Street','SJ',95112,3674268,100);
+INSERT INTO PROPOWNER VALUES('jn531','Pam','817 Albany Road','SF',94114,4739273,12);
+
+INSERT INTO RENTALPROP VALUES(32434,'ar323','7845 Franklin Ave','SF',94115,2,500.00,'available','12-JAN-12',6322);
+INSERT INTO RENTALPROP VALUES(12434,'ar323','5632 Long Blvd','SF',94116,3,700.00,'available','12-DEC-11',6322);
+INSERT INTO RENTALPROP VALUES(45434,'ar323','4375 7th St.','SJ',43103,3,600.00,'available','12-DEC-13',6322);
+INSERT INTO RENTALPROP VALUES(98134,'ar323','120 Doe Ave','SF',94122,3,100.00,'available','12-APR-12',6322);
+/*cannot have more than 3 rental properties for one supervisor*/
+
+INSERT INTO RENTALPROP VALUES(49334,'ar323','648 Water Way','SF',94121,5,1200.00,'not-available','12-MAR-12',4328);
+INSERT INTO RENTALPROP VALUES(19634,'ab412','998 Orchid Ave.','SJ',95115,1,200.00,'available','12-FEB-12',2539);
+INSERT INTO RENTALPROP VALUES(78234,'jn531','234 Oak St.','SF',95119,3,630.00,'available','12-FEB-13',2539);
+
+/*6*/
+execute NewLease(32434,'Bob',7646452,6546322,'Larry','14-JAN-16','21-JUL-16',900.00,63.13);
+execute NewLease(12434,'Barry',5446452,2146322,'Carl','02-JAN-16','21-MAY-16',1000.00,63.13);
+/*Lease was less than 6 months*/
+
+execute NewLease(12434,'Hill',7646352,6526322,'Simon','01-JAN-12','01-JUL-12',1000.00,73.13);
+/*10% more rent for 6 month rent*/
+execute NewLease(19634,'Hill',7643282,3196322,'Alvin','01-JAN-16','01-DEC-16',400.00,0.13);
+
+DELETE FROM LEASEAGREEMENT WHERE RENTNO=32434;
+execute NewLease(32434,'Bob',7646452,6546322,'Larry','14-JAN-16','21-JUL-16',900.00,63.13);
+/*rent increase by 10% for same property*/
+
+/*1*/
+execute BranchProps(34232);
+/*2*/
+@ Transaction2.sql
+/*3*/
+execute OwnerProps('Frank',34232);
+execute OwnerProps('Frank',45321);
+/*4*/
+execute AvailProps('SF',3,200,700);
+/*5*/
+@ Transaction5.sql
+/*6*/
+/*Done*/
+/*7*/
+execute RenterLease('Bob');
+/*8*/
+@ Transaction8.sql
+/*9*/
+execute AverageRent('SF');
+execute AverageRent('SJ');
+/*10*/
+@ Transaction10.sql
+
+
