@@ -15,7 +15,8 @@ BEGIN
 	v_cno := :NEW.SuperId;
 END BEFORE EACH ROW;
 
- --Statement levelSELECT * FROM RENTALPROP;
+ --Statement level
+SELECT * FROM RENTALPROP;
 AFTER STATEMENT IS
 BEGIN
 SELECT COUNT(*) INTO v_CurNum FROM RENTALPROP 
@@ -46,7 +47,8 @@ BEGIN
 	v_cno := :NEW.BranchNo;
 END BEFORE EACH ROW;
 
- --Statement levelSELECT * FROM EMPLOYEE;
+ --Statement level
+SELECT * FROM EMPLOYEE;
 AFTER STATEMENT IS
 BEGIN
     SELECT COUNT(*) INTO v_CurNum FROM Employee 
